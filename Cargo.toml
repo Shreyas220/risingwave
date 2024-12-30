@@ -4,7 +4,7 @@ cargo-features = ["profile-rustflags"]
 members = [
     "src/batch",
     "src/batch/executors",
-    "src/bench",
+    # "src/bench",
     "src/cmd",
     "src/cmd_all",
     "src/common",
@@ -155,6 +155,7 @@ icelake = { git = "https://github.com/risingwavelabs/icelake.git", rev = "0ec44f
 # branch dev-rebase-main-20241030
 iceberg = { git = "https://github.com/risingwavelabs/iceberg-rust.git", rev = "2a97e6fe6eb9e29ebd801d011f2a5b23aa7e1d21" }
 iceberg-catalog-rest = { git = "https://github.com/risingwavelabs/iceberg-rust.git", rev = "2a97e6fe6eb9e29ebd801d011f2a5b23aa7e1d21" }
+iceberg-catalog-hms = { git = "https://github.com/risingwavelabs/iceberg-rust.git", rev = "2a97e6fe6eb9e29ebd801d011f2a5b23aa7e1d21" }
 iceberg-catalog-glue = { git = "https://github.com/risingwavelabs/iceberg-rust.git", rev = "2a97e6fe6eb9e29ebd801d011f2a5b23aa7e1d21" }
 opendal = "0.49"
 # used only by arrow-udf-flight

@@ -223,6 +223,8 @@ impl IcebergSink {
             self.create_table_if_not_exists().await?;
         }
 
+        println!("FENIL::create_and_validiate_table::load table");
+
         let table = self
             .config
             .load_table()
@@ -362,17 +364,21 @@ impl Sink for IcebergSink {
     const SINK_NAME: &'static str = ICEBERG_SINK;
 
     async fn validate(&self) -> Result<()> {
+        println!("FENIL::Sink::validate::start");
         if "glue".eq_ignore_ascii_case(self.config.catalog_type()) {
             risingwave_common::license::Feature::IcebergSinkWithGlue
                 .check_available()
                 .map_err(|e| anyhow::anyhow!(e))?;
         }
         let _ = self.create_and_validate_table().await?;
+        println!("FENIL::Sink::validate::create_and_validate_table complete");
         Ok(())
     }
 
     async fn new_log_sinker(&self, writer_param: SinkWriterParam) -> Result<Self::LogSinker> {
+        println!("FENIL::Sink::new_log_sinker::start");
         let table = self.create_and_validate_table().await?;
+        println!("FENIL::Sink::new_log_sinker::create_and_validate_table complete");
         let inner = if let Some(unique_column_ids) = &self.unique_column_ids {
             IcebergSinkWriter::new_upsert(table, unique_column_ids.clone(), &writer_param).await?
         } else {
@@ -410,7 +416,9 @@ impl Sink for IcebergSink {
 
     async fn new_coordinator(&self) -> Result<Self::Coordinator> {
         let catalog = self.config.create_catalog().await?;
+        println!("FENIL::Sink::new_coordinator::create_and_validate_table complete");
         let table = self.create_and_validate_table().await?;
+        println!("FENIL::Sink::new_coordinator::create_and_validate_table complete");
 
         Ok(IcebergSinkCommitter { catalog, table })
     }

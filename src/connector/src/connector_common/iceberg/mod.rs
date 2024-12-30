@@ -24,6 +24,7 @@ use ::iceberg::table::Table;
 use ::iceberg::{Catalog, TableIdent};
 use anyhow::{anyhow, Context};
 use iceberg_catalog_glue::{AWS_ACCESS_KEY_ID, AWS_REGION_NAME, AWS_SECRET_ACCESS_KEY};
+use iceberg_catalog_hms::{HmsCatalog, HmsCatalogConfig, HmsThriftTransport};
 use risingwave_common::bail;
 use serde_derive::Deserialize;
 use serde_with::serde_as;
@@ -347,6 +348,31 @@ impl IcebergCommon {
                     None => config_builder.build(),
                 };
                 let catalog = iceberg_catalog_rest::RestCatalog::new(config);
+                Ok(Arc::new(catalog))
+            }
+            "hive_rust" => {
+                let mut iceberg_configs = HashMap::new();
+                if let Some(region) = &self.region {
+                    iceberg_configs.insert(S3_REGION.to_owned(), region.clone());
+                }
+                if let Some(endpoint) = &self.endpoint {
+                    iceberg_configs.insert(S3_ENDPOINT.to_owned(), endpoint.clone());
+                }
+
+                let config =
+                    HmsCatalogConfig::builder()
+                        .address(self.catalog_uri.clone().ok_or_else(|| {
+                            anyhow!("`catalog.uri` must be set in hive_rust catalog")
+                        })?)
+                        .warehouse(self.warehouse_path.clone().ok_or_else(|| {
+                            anyhow!("`warehouse.path` must be set in hive_rust catalog")
+                        })?)
+                        .thrift_transport(HmsThriftTransport::Buffered)
+                        .props(iceberg_configs)
+                        .build();
+
+                let catalog = HmsCatalog::new(config)?;
+
                 Ok(Arc::new(catalog))
             }
             "glue" => {
