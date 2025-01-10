@@ -6,7 +6,6 @@ RUN apt-get update \
   && apt-get -y install ca-certificates build-essential libsasl2-dev openjdk-17-jdk software-properties-common python3.12 python3.12-dev openssl pkg-config curl
 
 FROM base AS rust-base
-
 RUN apt-get update && apt-get -y install make cmake protobuf-compiler bash lld unzip rsync
 
 # Install Node.js as dependency for building the dashboard.
@@ -100,7 +99,6 @@ RUN apt-get update && apt-get -y install maven
 
 RUN mkdir -p /risingwave
 WORKDIR /risingwave/java
-
 # 1. copy only poms
 COPY --from=java-planner /risingwave/poms /risingwave/java/
 

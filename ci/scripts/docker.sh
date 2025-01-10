@@ -3,16 +3,12 @@
 # Exits as soon as any line fails.
 set -euo pipefail
 
-ghcraddr="ghcr.io/risingwavelabs/risingwave"
-dockerhubaddr="risingwavelabs/risingwave"
+dockerhubaddr="${DOCKER_USERNAME}/${DOCKER_REPOSITORY:-risingwave}"
 arch="$(uname -m)"
 CARGO_PROFILE=${CARGO_PROFILE:-production}
 
-echo "--- ghcr login"
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
-
 echo "--- dockerhub login"
-echo "$DOCKER_TOKEN" | docker login -u "risingwavelabs" --password-stdin
+echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 if [[ -n "${ORIGINAL_IMAGE_TAG+x}" ]] && [[ -n "${NEW_IMAGE_TAG+x}" ]]; then
   echo "--- retag docker image"
