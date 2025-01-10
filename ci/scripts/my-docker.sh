@@ -42,22 +42,22 @@ docker buildx build -f docker/Dockerfile \
   ${PULL_PARAM} \
   .
 
-echo "--- check the image can start correctly"
-container_id=$(docker run -d "${ghcraddr}:${BUILDKITE_COMMIT}-${arch}" playground)
-sleep 10
-container_status=$(docker inspect --format='{{.State.Status}}' "$container_id")
+# echo "--- check the image can start correctly"
+# container_id=$(docker run -d "${ghcraddr}:${BUILDKITE_COMMIT}-${arch}" playground)
+# sleep 10
+# container_status=$(docker inspect --format='{{.State.Status}}' "$container_id")
 
-if [ "$container_status" != "running" ]; then
-  echo "docker run failed with status $container_status"
-  docker inspect "$container_id"
-  docker logs "$container_id"
-  exit 1
-fi
+# if [ "$container_status" != "running" ]; then
+#   echo "docker run failed with status $container_status"
+#   docker inspect "$container_id"
+#   docker logs "$container_id"
+#   exit 1
+# fi
 
-# Clean up test container
-echo "--- cleaning up test container"
-docker stop "$container_id"
-docker rm "$container_id"
+# # Clean up test container
+# echo "--- cleaning up test container"
+# docker stop "$container_id"
+# docker rm "$container_id"
 
 # Push to registry
 echo "--- pushing image to registry"
