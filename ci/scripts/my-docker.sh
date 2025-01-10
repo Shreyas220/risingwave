@@ -5,7 +5,7 @@ set -euo pipefail
 CARGO_PROFILE=${CARGO_PROFILE:-release}
 ALWAYS_PULL=${ALWAYS_PULL:-false}
 BUILDKITE_COMMIT=${BUILDKITE_COMMIT:-$(git rev-parse HEAD)}
-arch=amd64
+arch=$(uname -m)
 ghcraddr=${GHCR_ADDR:-"gladium08/streamer"}
 
 echo "--- docker build and tag"
