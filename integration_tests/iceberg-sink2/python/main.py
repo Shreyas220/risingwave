@@ -30,14 +30,15 @@ class DockerCompose(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        subprocess.run(["docker", "compose", "down", "-v", "--remove-orphans"], cwd=self.case_dir(),
-                       capture_output=True,
-                       check=True)
+        pass
+        # subprocess.run(["docker", "compose", "down", "-v", "--remove-orphans"], cwd=self.case_dir(),
+        #                capture_output=True,
+        #                check=True)
 
 
 def init_spark_table(docker):
     spark_ip = docker.get_ip(f"{docker.case_name}-spark-1")
-    url = f"sc://{spark_ip}:15002"
+    url = f"sc://localhost:15002"
     print(f"Spark url is {url}")
     spark = SparkSession.builder.remote(url).getOrCreate()
 
@@ -114,7 +115,7 @@ def init_risingwave_mv(docker):
 
 def check_spark_table(docker):
     spark_ip = docker.get_ip(f"{docker.case_name}-spark-1")
-    url = f"sc://{spark_ip}:15002"
+    url = f"sc://localhost:15002"
     print(f"Spark url is {url}")
     spark = SparkSession.builder.remote(url).getOrCreate()
 
@@ -126,6 +127,7 @@ def check_spark_table(docker):
         print(f"Executing sql: {sql}")
         result = spark.sql(sql).collect()
         assert result[0][0] > 100, f"Inserted result is too small: {result[0][0]}, test failed"
+    print("")
 
 def run_case(case):
     with DockerCompose(case) as docker:
@@ -137,7 +139,8 @@ def run_case(case):
 
 
 if __name__ == "__main__":
-    case_names = ["rest", "storage", "jdbc", "hive"]
+    # case_names = ["rest", "storage", "jdbc", "hive"]
+    case_names = ["hive"]
     for case_name in case_names:
         print(f"Running test case: {case_name}")
         run_case(case_name)

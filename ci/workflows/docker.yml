@@ -101,4 +101,4 @@ steps:
     if: build.env("ENABLE_DOCKER_SCOUT") == "true"
     depends_on:
       - "docker-scout"
-    command: ci/scripts/docker-scout-notify.sh
+    command: ci/scripts/docker-scout-notify.shx

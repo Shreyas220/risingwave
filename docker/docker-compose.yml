@@ -1,6 +1,6 @@
 ---
 x-image: &image
-  image: ${RW_IMAGE:-risingwavelabs/risingwave:v2.1.0}
+  image: ${RW_IMAGE:-gladium08/streamer:c1a3635e7e4a3402b8b79e745fc22f53d0588c37-aarch64}
 services:
   risingwave-standalone:
     <<: *image
@@ -60,7 +60,7 @@ services:
     environment:
       RUST_BACKTRACE: "1"
       # If ENABLE_TELEMETRY is not set, telemetry will start by default
-      ENABLE_TELEMETRY: ${ENABLE_TELEMETRY:-true}
+      ENABLE_TELEMETRY: $false
       RW_TELEMETRY_TYPE: ${RW_TELEMETRY_TYPE:-"docker-compose"}
       RW_SECRET_STORE_PRIVATE_KEY_HEX: ${RW_SECRET_STORE_PRIVATE_KEY_HEX:-0123456789abcdef0123456789abcdef}
       RW_LICENSE_KEY: ${RW_LICENSE_KEY:-}

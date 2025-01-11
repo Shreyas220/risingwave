@@ -18,8 +18,8 @@ services:
       - iceberg_net
     links:
       - minio-0:icebergdata.minio-0
-    expose:
-      - 8181
+    ports:
+      - "8181:8181"
 
   spark:
     depends_on:
@@ -38,8 +38,8 @@ services:
       iceberg_net:
     links:
       - minio-0:icebergdata.minio-0
-    expose:
-      - 15002
+    ports:
+      - "15002:15002"
     healthcheck:
       test: netstat -ltn | grep -c 15002
       interval: 1s
