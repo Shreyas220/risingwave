@@ -375,6 +375,18 @@ impl IcebergCommon {
 
                 Ok(Arc::new(catalog))
             }
+            "glue_rust" => {
+                let config = iceberg_catalog_glue::GlueCatalogConfig::builder()
+                    .warehouse(self.warehouse_path.clone().ok_or_else(|| {
+                        anyhow!("`warehouse.path` must be set in glue_rust catalog")
+                    })?)
+                    .props(HashMap::new())
+                    .build();
+
+                let catalog = iceberg_catalog_glue::GlueCatalog::new(config).await?;
+
+                Ok(Arc::new(catalog))
+            }
             "glue" => {
                 let mut iceberg_configs = HashMap::new();
                 // glue

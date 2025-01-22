@@ -6266,7 +6266,7 @@ dependencies = [
 [[package]]
 name = "iceberg"
 version = "0.3.0"
-source = "git+https://github.com/feniljain/iceberg-rust.git?rev=0d0fe31543ec94893a2aaaa77db41720ddb5d988#0d0fe31543ec94893a2aaaa77db41720ddb5d988"
+source = "git+https://github.com/feniljain/iceberg-rust.git?rev=6691e90520f713a86ff7571287a5da1674e4f752#6691e90520f713a86ff7571287a5da1674e4f752"
 dependencies = [
  "anyhow",
  "apache-avro 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -6315,7 +6315,7 @@ dependencies = [
 [[package]]
 name = "iceberg-catalog-glue"
 version = "0.3.0"
-source = "git+https://github.com/feniljain/iceberg-rust.git?rev=0d0fe31543ec94893a2aaaa77db41720ddb5d988#0d0fe31543ec94893a2aaaa77db41720ddb5d988"
+source = "git+https://github.com/feniljain/iceberg-rust.git?rev=6691e90520f713a86ff7571287a5da1674e4f752#6691e90520f713a86ff7571287a5da1674e4f752"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6332,7 +6332,7 @@ dependencies = [
 [[package]]
 name = "iceberg-catalog-hms"
 version = "0.3.0"
-source = "git+https://github.com/feniljain/iceberg-rust.git?rev=0d0fe31543ec94893a2aaaa77db41720ddb5d988#0d0fe31543ec94893a2aaaa77db41720ddb5d988"
+source = "git+https://github.com/feniljain/iceberg-rust.git?rev=6691e90520f713a86ff7571287a5da1674e4f752#6691e90520f713a86ff7571287a5da1674e4f752"
 dependencies = [
  "anyhow",
  "arrow-array 53.2.0",
@@ -6354,7 +6354,7 @@ dependencies = [
 [[package]]
 name = "iceberg-catalog-rest"
 version = "0.3.0"
-source = "git+https://github.com/feniljain/iceberg-rust.git?rev=0d0fe31543ec94893a2aaaa77db41720ddb5d988#0d0fe31543ec94893a2aaaa77db41720ddb5d988"
+source = "git+https://github.com/feniljain/iceberg-rust.git?rev=6691e90520f713a86ff7571287a5da1674e4f752#6691e90520f713a86ff7571287a5da1674e4f752"
 dependencies = [
  "async-trait",
  "chrono",
