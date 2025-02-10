@@ -18,7 +18,9 @@ mod storage_catalog;
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use ::iceberg::io::{S3_ACCESS_KEY_ID, S3_ENDPOINT, S3_REGION, S3_SECRET_ACCESS_KEY};
+use ::iceberg::io::{
+    S3_ACCESS_KEY_ID, S3_ENDPOINT, S3_REGION, S3_SECRET_ACCESS_KEY, S3_SSE_KEY, S3_SSE_TYPE,
+};
 use ::iceberg::spec::TableMetadata;
 use ::iceberg::table::Table;
 use ::iceberg::{Catalog, TableIdent};
@@ -49,6 +51,10 @@ pub struct IcebergCommon {
     pub access_key: Option<String>,
     #[serde(rename = "s3.secret.key")]
     pub secret_key: Option<String>,
+    #[serde(rename = "s3.sse.type")]
+    pub sse_type: Option<String>,
+    #[serde(rename = "s3.sse.key")]
+    pub sse_key: Option<String>,
     /// Path of iceberg warehouse, only applicable in storage catalog.
     #[serde(rename = "warehouse.path")]
     pub warehouse_path: Option<String>,
@@ -358,6 +364,12 @@ impl IcebergCommon {
                 if let Some(endpoint) = &self.endpoint {
                     iceberg_configs.insert(S3_ENDPOINT.to_owned(), endpoint.clone());
                 }
+                if let Some(sse_type) = &self.sse_type {
+                    iceberg_configs.insert(S3_SSE_TYPE.to_owned(), sse_type.clone());
+                }
+                if let Some(sse_key) = &self.sse_key {
+                    iceberg_configs.insert(S3_SSE_KEY.to_owned(), sse_key.clone());
+                }
 
                 let config =
                     HmsCatalogConfig::builder()
@@ -376,11 +388,19 @@ impl IcebergCommon {
                 Ok(Arc::new(catalog))
             }
             "glue_rust" => {
+                let mut iceberg_configs = HashMap::new();
+                if let Some(sse_type) = &self.sse_type {
+                    iceberg_configs.insert(S3_SSE_TYPE.to_owned(), sse_type.clone());
+                }
+                if let Some(sse_key) = &self.sse_key {
+                    iceberg_configs.insert(S3_SSE_KEY.to_owned(), sse_key.clone());
+                }
+
                 let config = iceberg_catalog_glue::GlueCatalogConfig::builder()
                     .warehouse(self.warehouse_path.clone().ok_or_else(|| {
                         anyhow!("`warehouse.path` must be set in glue_rust catalog")
                     })?)
-                    .props(HashMap::new())
+                    .props(iceberg_configs)
                     .build();
 
                 let catalog = iceberg_catalog_glue::GlueCatalog::new(config).await?;

@@ -1396,6 +1396,8 @@ mod test {
                 scope: None,
                 token: None,
                 enable_config_load: None,
+                sse_type: None,
+                sse_key: None,
             },
             r#type: "upsert".to_owned(),
             force_append_only: false,
